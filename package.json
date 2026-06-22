@@ -1,0 +1,13 @@
+{
+  "name": "hikvision-height-measurement-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 5173",
+    "build": "node --check src/main.js && node --check server/rtsp-bridge.mjs",
+    "stream:bridge": "node server/rtsp-bridge.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
