@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>海康威视 2D 身高测量</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Hikvision 2D Camera Height Measurement</p>
+          <h1>基于海康威视 2D 摄像头的人体身高测量网页版程序</h1>
+          <p>浏览器无法直接播放 RTSP，本程序通过本地 FFmpeg 桥接服务将海康摄像头 RTSP 转换为 MJPEG，再在网页端完成标定、点击测量与误差控制提示。</p>
+        </div>
+        <div class="status-card"><span>目标误差</span><strong>&lt; 5%</strong><small>需固定相机、地面平整、完成现场标定</small></div>
+      </section>
+      <section class="grid">
+        <div class="panel video-panel">
+          <div class="panel-header"><h2>实时画面</h2><button id="clearPoints">清除测量点</button></div>
+          <div class="frame" id="frame"><img id="cameraFrame" src="http://localhost:8090/stream.mjpeg" alt="海康威视实时视频流" /><div id="topGuide" class="guide top"></div><div id="bottomGuide" class="guide bottom"></div></div>
+          <p class="hint">操作：先点击头顶，再点击脚底。第三次点击会开始新测量。</p>
+        </div>
+        <aside class="panel controls">
+          <h2>摄像头与标定</h2>
+          <label>RTSP 地址<input id="rtspUrl" value="rtsp://admin:admin@192.168.1.168:554/live/main_stream" /></label>
+          <label>网页播放地址（桥接输出）<input id="streamUrl" value="http://localhost:8090/stream.mjpeg" /></label>
+          <div class="two-col">
+            <label>标定杆顶端 Y(px)<input type="number" id="poleTopPx" value="140" /></label>
+            <label>标定杆底端 Y(px)<input type="number" id="poleBottomPx" value="620" /></label>
+            <label>标定杆高度(cm)<input type="number" id="poleHeightCm" value="180" /></label>
+            <label>相机俯仰角(°)<input type="number" id="cameraTiltDeg" value="8" /></label>
+            <label>人员距离(cm)<input type="number" id="subjectDistanceCm" value="320" /></label>
+            <label>标定距离(cm)<input type="number" id="referenceDistanceCm" value="320" /></label>
+          </div>
+          <div class="result"><span>测量结果</span><strong id="heightResult">--</strong><small id="detailResult">等待选择头顶和脚底</small></div>
+        </aside>
+      </section>
+      <section class="panel methodology">
+        <h2>保证误差小于 5% 的工程约束</h2>
+        <ol><li>固定摄像头高度、焦距和安装角度，禁止自动变焦；人员站在标定平面同一地面线上。</li><li>用 1.6m 至 2.0m 标定杆在测量位置标定像素/厘米比例，并记录标定距离。</li><li>脚底点必须落在地面接触点，头顶点取最高人体轮廓；帽子、弯腰、遮挡会降低精度。</li><li>人员距离变化时使用距离比例修正；更高精度建议接入单应性地面标定或深度相机。</li></ol>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
